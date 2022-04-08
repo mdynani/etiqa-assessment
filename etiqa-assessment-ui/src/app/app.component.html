@@ -1,0 +1,136 @@
+<div class="container" id="main-container">
+   <div class="card m-5 p-3">
+      <div class="card-body">
+         <div class="float-right btn-group btn-group-sm">
+            <button class="btn btn-primary tooltips" (click)="openAddModal(addStudentModal)">Add Student <i
+                  class="fa fa-plus"></i></button>
+         </div>
+         <table class="table table-bordered table-striped table-hover">
+            <thead>
+               <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Identification</th>
+                  <th>Action</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr *ngFor="let student of students">
+                  <td>{{ student.id }}</td>
+                  <td>{{ student.name }}</td>
+                  <td>{{ student.email }}</td>
+                  <td>{{ student.identification }}</td>
+                  <td>
+                     <div class="float-center btn-group btn-group-sm">
+                        <button class="btn btn-primary tooltips" (click)="open(updateStudentModal,student)">Edit <i
+                              class="fa fa-pencil"></i></button>
+                        <button class="btn btn-danger tooltips" (click)="open(deleteStudentModal,student)">Delete <i
+                              class="fa fa-times"></i></button>
+                        <!-- <a (click)="onOpenModal('updateStudentModal',student, 'edit')" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                        <a (click)="onOpenModal('deleteStudentModal',student, 'delete')" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a> -->
+                     </div>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
+
+<ng-template #addStudentModal let-modal>
+   <div class="modal-header">
+      <h5 class="modal-title" id="modal-title">Add Student</h5>
+      <button type="button" class="btn btn-dark" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+   </div>
+   <div class="modal-body">
+      <form #addForm="ngForm" (ngSubmit)="onAddStudent(addForm)">
+         <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Name" required>
+         </div>
+         <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
+         </div>
+         <div class="form-group">
+            <label for="identification">Identification</label>
+            <input type="text" ngModel name="identification" class="form-control" id="identification"
+               placeholder="Identification" required>
+         </div>
+         <div class="form-group">
+            <select name="course" ngModel class="btn btn-secondary dropdown-toggle form-control" required>
+               <option value="">Select Course</option>
+               <option *ngFor="let course of courses" value="{{course.id}}" [value]="course.id" [ngValue]="course.id">
+                  {{course.name}}</option>
+            </select>
+         </div>
+         <div class="modal-footer">
+            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary"
+               (click)="modal.close('Close')">Close</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
+         </div>
+      </form>
+   </div>
+</ng-template>
+
+<ng-template #updateStudentModal let-modal>
+   <div class="modal-header">
+      <h5 class="modal-title" id="modal-title">Update Student</h5>
+      <button type="button" class="btn btn-dark" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+   </div>
+   <div class="modal-body">
+      <form #editForm="ngForm" (ngSubmit)="onUpdateStudent(editForm.value)">
+         <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" ngModel="{{editStudent?.name}}" name="name" class="form-control" id="name"
+               aria-describedby="emailHelp" placeholder="Name" required>
+         </div>
+         <input type="hidden" ngModel="{{editStudent?.id}}" name="id" class="form-control" id="id" placeholder="id">
+         <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" ngModel="{{editStudent?.email}}" name="email" class="form-control" id="email"
+               placeholder="Email" required>
+         </div>
+         <div class="form-group">
+            <label for="identification">Identification</label>
+            <input type="text" ngModel="{{editStudent?.identification}}" name="identification" class="form-control"
+               id="identification" placeholder="Identification" required>
+         </div>
+         <div class="form-group">
+            <select name="course" ngModel class="btn btn-secondary dropdown-toggle form-control" required>
+               <option value="">Select Course</option>
+               <option *ngFor="let course of courses" value="{{course.id}}" [value]="course.id" [ngValue]="course.id">
+                  {{course.name}}</option>
+            </select>
+         </div>
+         <div class="modal-footer">
+            <!-- <button (click)="onUpdateStudent(editForm.value)" data-dismiss="modal" class="btn btn-primary">Save
+               changes</button> -->
+            <button [disabled]="editForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
+            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary"
+               (click)="modal.close('Close')">Close</button>
+         </div>
+      </form>
+   </div>
+</ng-template>
+
+<ng-template #deleteStudentModal let-modal>
+   <div class="modal-header">
+      <h5 class="modal-title" id="modal-title">Delete Student</h5>
+      <button type="button" class="btn btn-dark" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+   </div>
+   <div class="modal-body">
+      <p>Are you sure you want to delete student {{deleteStudent?.name}}?</p>
+      <div class="modal-footer">
+         <button (click)="onDeleteStudent(deleteStudent?.id!)" class="btn btn-primary" data-dismiss="modal">Yes</button>
+         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.close('Close')">No</button>
+      </div>
+   </div>
+</ng-template>
