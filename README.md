@@ -29,5 +29,8 @@
   </li>
   <li>Import init_data.sql</li>
   <li>Swagger UI accessible at http://localhost:9090/swagger-ui/index.html or open http://localhost:9090/, there is link to swagger ui.</li>
-  <li>Import init_data.sql</li>
+  <li>Navigate into etiqa-assessment-ui</li>
+  
+        npm install
+        ng serve
 </ol>
